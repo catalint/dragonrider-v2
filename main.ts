@@ -6,21 +6,23 @@ function initGame () {
         maxSoundLevel: 0
     }
 }
+
+
 function writeToScreen () {
-    OLED.clear()
+    // OLED.clear()
     if (!(state.gameHasStarted)) {
-        OLED.writeStringNewLine("Salut Helikoner,")
-        OLED.writeStringNewLine("Indraznesti sa ma trezesti ?")
+        OLED12864_I2C.showString(0,0,"Salut Helikoner,",2)
+        // OLED.writeStringNewLine("Indraznesti sa ma trezesti ?")
     } else {
-        OLED.writeStringNewLine("Putere " + state.maxSoundLevel.toString())
+        // OLED.writeStringNewLine("Putere " + state.maxSoundLevel.toString())
         if (state.secondsLeft > 0) {
-            OLED.writeStringNewLine("Mai ai " + state.secondsLeft.toString() + " secunde")
+            // OLED.writeStringNewLine("Mai ai " + state.secondsLeft.toString() + " secunde")
         } else {
             if (state.maxSoundLevel < requiredPower) {
-                OLED.writeStringNewLine("GAME OVER Helikoner")
+                // OLED.writeStringNewLine("GAME OVER Helikoner")
             } else {
-                OLED.writeStringNewLine("AI TREZIT DRAGONUL !!!")
-                OLED.writeStringNewLine("esti un Helikoner puternic !!!")
+                // OLED.writeStringNewLine("AI TREZIT DRAGONUL !!!")
+                // OLED.writeStringNewLine("esti un Helikoner puternic !!!")
             }
         }
     }
@@ -32,20 +34,26 @@ requiredPower = 10
 let sampleRate = 100
 let selectedSouds = 15
 serial.redirectToUSB()
-let state : {
-    gameHasStarted:boolean,
-    sounds:number[],
-    secondsLeft:number,
-    maxSoundLevel:number
+let state: {
+    gameHasStarted: boolean,
+    sounds: number[],
+    secondsLeft: number,
+    maxSoundLevel: number
 } = {
-    gameHasStarted:false,
-    secondsLeft:5,
-    sounds:[],
-    maxSoundLevel:0
+    gameHasStarted: false,
+    secondsLeft: 5,
+    sounds: [],
+    maxSoundLevel: 0
 }
-OLED.init(128, 64)
+//OLED.init(128, 64)
+OLED12864_I2C.init(60)
+OLED12864_I2C.showString(
+    0,
+    0,
+    "Hello!",
+    1);
 writeToScreen()
-forever(()=>{
+forever(() => {
     if (input.buttonIsPressed(Button.A)) {
         initGame();
     }
@@ -72,7 +80,7 @@ loops.everyInterval(sampleRate, function () {
 })
 loops.everyInterval(100, function () {
     if (!(state.gameHasStarted)) {
-        return ;
+        return;
     }
     state.sounds.sort()
 state.sounds = state.sounds.slice(-selectedSouds)
