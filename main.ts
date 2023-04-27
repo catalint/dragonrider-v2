@@ -10,22 +10,26 @@ function initGame () {
 
 function writeToScreen () {
     // OLED.clear()
+    OLED12864_I2C.clear()
     if (!(state.gameHasStarted)) {
-        OLED12864_I2C.showString(0,0,"Salut Helikoner,",2)
-        // OLED.writeStringNewLine("Indraznesti sa ma trezesti ?")
+        OLED12864_I2C.showString(0, 1,"  HELIKON,",2)
+        OLED12864_I2C.showString(0,2," LA ATAC !!!",4)
     } else {
-        // OLED.writeStringNewLine("Putere " + state.maxSoundLevel.toString())
+        OLED12864_I2C.showString(0, 0, " PUTEREA TA")
+        OLED12864_I2C.showString(0,1,"  -- " + state.maxSoundLevel.toString() +  " -- ")
         if (state.secondsLeft > 0) {
-            // OLED.writeStringNewLine("Mai ai " + state.secondsLeft.toString() + " secunde")
+            OLED12864_I2C.showString(0, 2,"  TIMP: " + state.secondsLeft.toString() + "")
         } else {
             if (state.maxSoundLevel < requiredPower) {
-                // OLED.writeStringNewLine("GAME OVER Helikoner")
+                OLED12864_I2C.showString(0, 2, " GAME OVER")
+                OLED12864_I2C.showString(0, 3, "Helikoner")
             } else {
-                // OLED.writeStringNewLine("AI TREZIT DRAGONUL !!!")
-                // OLED.writeStringNewLine("esti un Helikoner puternic !!!")
+                OLED12864_I2C.showString(0, 2," AI SPERIAT ")
+                OLED12864_I2C.showString(0, 3," DRAGONUL !!!")
             }
         }
     }
+    OLED12864_I2C.zoom(true)
 }
 let soundLevel = 0
 let requiredPower = 0
