@@ -5,11 +5,11 @@ function initGame () {
         sounds: [],
         maxSoundLevel: 0
     }
+    writeToScreen()
 }
 
 
 function writeToScreen () {
-    // OLED.clear()
     OLED12864_I2C.clear()
     if (!(state.gameHasStarted)) {
         OLED12864_I2C.showString(0, 1,"  HELIKON,",2)
@@ -51,17 +51,17 @@ let state: {
 }
 //OLED.init(128, 64)
 OLED12864_I2C.init(60)
-OLED12864_I2C.showString(
-    0,
-    0,
-    "Hello!",
-    1);
 writeToScreen()
-forever(() => {
-    if (input.buttonIsPressed(Button.A)) {
+input.onButtonPressed(Button.A,()=>{
+    if (state.gameHasStarted){
+        state.gameHasStarted = false;
+        writeToScreen()
+    }
+    else{
         initGame();
     }
 })
+
 loops.everyInterval(1000, function () {
     if (!(state.gameHasStarted) || state.secondsLeft == 0) {
         return;
@@ -88,7 +88,7 @@ loops.everyInterval(100, function () {
     }
     state.sounds.sort()
 state.sounds = state.sounds.slice(-selectedSouds)
-avgMaxSound = state.sounds.reduce((a, b) => a + b, 0) / state.sounds.length
+avgMaxSound = state.sounds.reduce((a, b) => a + b, 0) / (state.sounds.length || 1)
     avgMaxSound = parseInt(avgMaxSound.toString())
     state.maxSoundLevel = avgMaxSound
 if (avgMaxSound > state.maxSoundLevel) {
