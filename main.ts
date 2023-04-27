@@ -1,6 +1,5 @@
 
 serial.redirectToUSB()
-OLED.init(128, 64)
 let state : {
     gameHasStarted:boolean,
     sounds:number[],
@@ -14,15 +13,20 @@ let state : {
 }
 let sampleRate = 100;
 let selectedSouds = 15;
+let requiredPower = 10;
 
 function initGame(){
     state = {
         gameHasStarted: true,
-        secondsLeft:15,
+        secondsLeft:5,
         sounds: [],
         maxSoundLevel: 0
     }
 }
+
+
+OLED.init(128, 64)
+writeToScreen();
 
 forever(()=>{
     if (input.buttonIsPressed(Button.A)) {
@@ -52,19 +56,20 @@ loops.everyInterval(sampleRate, function () {
 function writeToScreen() {
     OLED.clear()
     if (!state.gameHasStarted) {
-        OLED.writeStringNewLine('Salut Helikoner, indraznesti sa ma trezesti ?');
-    }else{
+        OLED.writeStringNewLine('Salut Helikoner,');
+        OLED.writeStringNewLine('Indraznesti sa ma trezesti ?')
+    } else {
+        OLED.writeStringNewLine("Putere " + state.maxSoundLevel.toString())
         if (state.secondsLeft > 0){
-            OLED.writeStringNewLine(state.maxSoundLevel.toString())
             OLED.writeStringNewLine("Mai ai "+state.secondsLeft.toString() +" secunde")
         }else{
-            if (state.maxSoundLevel < 100) {
+            if (state.maxSoundLevel < requiredPower) {
                 OLED.writeStringNewLine("GAME OVER Helikoner")
             }
             else {
-                OLED.writeStringNewLine("AI TREZIT DRAGONUL, esti un Helikoner puternic 💪")
+                OLED.writeStringNewLine("AI TREZIT DRAGONUL !!!")
+                OLED.writeStringNewLine("esti un Helikoner puternic !!!")
             }
-            OLED.writeStringNewLine(state.maxSoundLevel.toString())
         }
     }
 }
