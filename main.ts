@@ -23,9 +23,19 @@ function writeToScreen () {
             if (state.maxSoundLevel < requiredPower) {
                 OLED12864_I2C.showString(0, 2, " GAME OVER")
                 OLED12864_I2C.showString(0, 3, "Helikoner")
+                let times = 3;
+                while (times) {
+                    music.playSoundEffect(music.createSoundEffect(WaveShape.Sine, 1056, 1481, 255, 0, 200, SoundExpressionEffect.None, InterpolationCurve.Logarithmic), SoundExpressionPlayMode.UntilDone)
+                    times--;
+                }
             } else {
                 OLED12864_I2C.showString(0, 2," AI SPERIAT ")
-                OLED12864_I2C.showString(0, 3," DRAGONUL !!!")
+                OLED12864_I2C.showString(0, 3, " DRAGONUL !!!")
+                let times = 3;
+                while (times) {
+                    music.playSoundEffect(music.createSoundEffect(WaveShape.Sawtooth, 3367, 178, 255, 0, 421, SoundExpressionEffect.None, InterpolationCurve.Logarithmic), SoundExpressionPlayMode.UntilDone)
+                    times--;
+                }
             }
         }
     }
