@@ -9,7 +9,7 @@ writeToScreen()
 function initGame () {
     state = {
         gameHasStarted: true,
-        secondsLeft: 5,
+        secondsLeft: 3,
         sounds: [],
         maxSoundLevel: 0
     }
@@ -92,12 +92,13 @@ function writeToScreen () {
     }
     OLED12864_I2C.zoom(true)
 }
+let numberOfSoundsRecorded = 0
 let soundLevel = 0
 let times2 = 0
 let times = 0
 let requiredPower = 0
 let avgMaxSound = 0
-requiredPower = 100
+requiredPower = 45
 let sampleRate = 200
 let selectedSouds = 15
 serial.redirectToUSB()
@@ -141,7 +142,7 @@ loops.everyInterval(100, function () {
     }
     state.sounds.sort()
 state.sounds = state.sounds.slice(-selectedSouds)
-    let numberOfSoundsRecorded = state.sounds.length
+numberOfSoundsRecorded = state.sounds.length
     avgMaxSound = state.sounds.reduce((a, b) => a + b, 0) / numberOfSoundsRecorded
     avgMaxSound = parseInt(avgMaxSound.toString())
     state.maxSoundLevel = avgMaxSound
